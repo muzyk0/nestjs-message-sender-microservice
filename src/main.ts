@@ -23,5 +23,6 @@ import { ConfigService } from '@nestjs/config';
 
   await app.startAllMicroservices();
   await app.listen(configService.get('PORT'));
+
   console.log(`Application is running on: ${await app.getUrl()}`);
 })();
