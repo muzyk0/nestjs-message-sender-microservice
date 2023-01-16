@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
     transport: Transport.TCP,
     options: {
       host: configService.get<string>('MESSAGE_SENDER_HOST'),
-      port: Number(configService.get<string>('MESSAGE_SENDER_PORT')),
+      port: Number(configService.get<string>('PORT')),
     },
   });
 
