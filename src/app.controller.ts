@@ -29,8 +29,11 @@ export class AppController {
   }
 
   @MessagePattern({ cmd: 'health-check' })
-  async healthCheck() {
-    return 'Message service works correctly!';
+  async healthCheck(payload: string) {
+    console.log(payload);
+    return `Message service works correctly! Payload: ${JSON.stringify(
+      payload,
+    )}`;
   }
 
   @EventPattern(EventPatterns.SEND_TEST_EMAIL)
