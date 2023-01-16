@@ -11,20 +11,12 @@ import { ConfigService } from '@nestjs/config';
   const rabbitMQUri = configService.get<string>('RMQ_URLS').split(', ');
 
   app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.KAFKA,
+    transport: Transport.RMQ,
     options: {
-      client: {
-        clientId: 'message-sender',
-        brokers: ['glider.srvs.cloudkafka.com:9094'],
-        ssl: true,
-        sasl: {
-          mechanism: 'scram-sha-512',
-          username: 'pfznmagr',
-          password: 'BYYCEcdfuNgH3HADbLLypoCnmo2GW4m_',
-        },
-      },
-      consumer: {
-        groupId: 'nofitications', // declaring consumer here
+      urls: rabbitMQUri,
+      queue: 'message_sender_queue',
+      queueOptions: {
+        durable: false,
       },
     },
   });
