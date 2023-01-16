@@ -7,6 +7,7 @@ RUN curl https://get.volta.sh | bash
 ENV VOLTA_HOME /root/.volta
 ENV PATH /root/.volta/bin:$PATH
 RUN volta install node@${NODE_VERSION}
+RUN volta install pnpm
 
 #######################################################################
 
@@ -21,7 +22,7 @@ ENV NODE_ENV production
 
 COPY . .
 
-RUN npm install && npm run build
+RUN pnpm install && pnpm run build
 FROM debian:bullseye
 
 LABEL fly_launch_runtime="nodejs"
@@ -33,4 +34,4 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV PATH /root/.volta/bin:$PATH
 
-CMD [ "npm", "run", "start" ]
+CMD [ "pnpm", "run", "start" ]
