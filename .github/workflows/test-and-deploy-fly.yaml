@@ -1,4 +1,4 @@
-name: Test & Deploy #Название pipeline который будет выполнять github actions
+name: Deploy #Название pipeline который будет выполнять github actions
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
 #    needs: tests # указываем зависимую джобу т/е в данном случае деплой не запустится если тесты завершились ошибкой
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master # This is the action
       - run: flyctl deploy --remote-only
         env:
