@@ -8,16 +8,11 @@ import { ConfigService } from '@nestjs/config';
 
   const configService = app.get(ConfigService);
 
-  const rabbitMQUri = configService.get<string>('RMQ_URLS').split(', ');
-
   app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
+    transport: Transport.TCP,
     options: {
-      urls: rabbitMQUri,
-      queue: 'message_sender_queue',
-      queueOptions: {
-        durable: false,
-      },
+      host: configService.get<string>('MESSAGE_SENDER_HOST'),
+      port: Number(configService.get<string>('MESSAGE_SENDER_PORT')),
     },
   });
 
