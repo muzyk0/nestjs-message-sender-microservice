@@ -1,7 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { EventPattern, MessagePattern } from '@nestjs/microservices';
-import { EmailService } from './email/application/email.service';
 import { CommandBus } from '@nestjs/cqrs';
 import {
   ISendRecoveryPasswordTempCodeCommand,
@@ -27,6 +26,11 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @MessagePattern({ cmd: 'health-check' })
+  async healthCheck() {
+    return 'Message service works correctly!';
   }
 
   @EventPattern(EventPatterns.SEND_TEST_EMAIL)

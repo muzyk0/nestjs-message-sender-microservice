@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: blogs
+    environment:
+      RMQ_URLS: ${RMQ_URLS:-amqp://localhost:5672, amqp://localhost:5673}
+      EMAIL_FROM: ${EMAIL_FROM:-}
+      EMAIL_FROM_PASSWORD: ${EMAIL_FROM_PASSWORD:-}
+      FLY_API_TOKEN: ${FLY_API_TOKEN:-}
+    ports:
+      - "5000:5000"
+      - "9229:9229"
+    command: npm run start
+    networks:
+      - webnet
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
+
+networks:
+  webnet:
+
+volumes:
+  blogs-nest-pg:
