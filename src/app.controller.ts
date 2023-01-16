@@ -29,6 +29,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @MessagePattern({ cmd: 'health-check' })
+  async healthCheck() {
+    console.log('health-check');
+    return 'Work!';
+  }
+
   @EventPattern(EventPatterns.SEND_TEST_EMAIL)
   async sendTestEmail({ email, userName }: ISendTestEmailCommand) {
     return this.commandBus.execute(new SendTestEmailCommand(email, userName));
