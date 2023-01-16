@@ -25,9 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: superfly/flyctl-actions@1.1 # This is the action
-        with:
-          args: "deploy"
+      - uses: superfly/flyctl-actions/setup-flyctl@master # This is the action
+      - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
