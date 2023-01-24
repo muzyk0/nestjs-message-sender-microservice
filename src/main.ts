@@ -1,22 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Transport } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
 
 (async function bootstrap() {
-  const PORT = new ConfigService().get('PORT');
-  const HOST = new ConfigService().get('TCP_HOST');
+  const app = await NestFactory.create(AppModule);
 
-  const app = await NestFactory.createMicroservice(AppModule, {
-    transport: Transport.TCP,
+  const configService = app.get(ConfigService);
+
+  const rabbitMQUri = configService.get<string>('RMQ_URLS').split(', ');
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
     options: {
-      host: HOST,
-      port: PORT,
+      urls: rabbitMQUri,
+      queue: 'message_sender_queue',
+      queueOptions: {
+        durable: false,
+      },
     },
   });
 
-  Logger.log(`Microservice is listening at ${PORT}`);
-
-  await app.listen();
+  await app.startAllMicroservices();
+  await app.listen(configService.get('PORT'));
+  console.log(`Application is running on: ${await app.getUrl()}`);
 })();
