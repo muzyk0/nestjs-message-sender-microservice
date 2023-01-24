@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 
 (async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,5 +24,5 @@ import { ConfigService } from '@nestjs/config';
 
   await app.startAllMicroservices();
   await app.listen(configService.get('PORT'));
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  Logger.log(`Application is running on: ${await app.getUrl()}`);
 })();
